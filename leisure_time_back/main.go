@@ -1,7 +1,13 @@
 package main
 
-import "fmt"
+import (
+	"leisure_time_back/cmd/server"
+)
 
 func main() {
-	fmt.Println("Hello world")
+	server := server.NewServer()
+
+	server.SetupServer()
+
+	server.RunServer()
 }
