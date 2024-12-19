@@ -3,11 +3,11 @@ package router
 import (
 	"leisure_time/cmd/config"
 	errs "leisure_time/internal/domain/errors"
-	servicemanager "leisure_time/internal/managers/service_manager"
+	"leisure_time/internal/service"
 )
 
 type IRouter interface {
-	BindingServiceManager(servicemanager.IServiceManager)
+	BindingServiceManager(service.IServiceProvider)
 	Setup()
 	Start()
 }

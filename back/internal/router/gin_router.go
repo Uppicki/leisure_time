@@ -3,15 +3,15 @@ package router
 import (
 	config "leisure_time/cmd/config"
 	ginhandlers "leisure_time/internal/gin_handlers"
-	servicemanager "leisure_time/internal/managers/service_manager"
+	"leisure_time/internal/service"
 
 	gin "github.com/gin-gonic/gin"
 )
 
 type ginRouter struct {
-	config         *config.RouterConfig
-	engine         *gin.Engine
-	serviceManager servicemanager.IServiceManager
+	config          *config.RouterConfig
+	engine          *gin.Engine
+	serviceProvider service.IServiceProvider
 
 	isReady  bool
 	isActive bool
@@ -21,7 +21,7 @@ func (router *ginRouter) setupRoutes() {
 	if router.isBindingService() {
 		baseGroup := router.engine.Group("")
 
-		userService := router.serviceManager.GetUserService()
+		userService := router.serviceProvider.GetUserService()
 
 		userHandler := ginhandlers.NewUserHandler(userService)
 
@@ -41,11 +41,13 @@ func (router *ginRouter) setReady() {
 }
 
 func (router *ginRouter) isBindingService() bool {
-	return router.serviceManager != nil
+	return router.serviceProvider != nil
 }
 
-func (router *ginRouter) BindingServiceManager(manager servicemanager.IServiceManager) {
-	router.serviceManager = manager
+func (router *ginRouter) BindingServiceManager(
+	serviceProvider service.IServiceProvider,
+) {
+	router.serviceProvider = serviceProvider
 }
 
 func (router *ginRouter) Setup() {
