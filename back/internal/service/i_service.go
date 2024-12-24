@@ -3,6 +3,7 @@ package service
 import (
 	"leisure_time/cmd/config"
 	errs "leisure_time/internal/domain/errors"
+	"leisure_time/internal/domain/models"
 	"leisure_time/internal/repositories"
 )
 
@@ -15,14 +16,20 @@ type IService interface {
 	IsReady() bool
 }
 
+type IUserService interface {
+	GetUserByLogin(string) (models.User, error)
+	CreateUser(string, string) error
+	GetUsers() ([]models.User, error)
+}
+
 type IServiceProvider interface {
-	GetUserService() *UserService
+	GetUserService() IUserService
 }
 
 func ServiceFactory(cfg *config.ServiceConfig) (IService, error) {
 	switch cfg.Type {
 	case config.UserServiceType:
-		return &UserService{
+		return &userService{
 			baseService: baseService{
 				config: cfg,
 			},

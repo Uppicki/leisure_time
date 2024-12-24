@@ -1,35 +1,36 @@
 package service
 
 import (
-	"leisure_time/internal/domain/dto"
+	"leisure_time/internal/domain/models"
 	"leisure_time/internal/repositories"
 )
 
-type UserService struct {
+type userService struct {
 	baseService
-	repo repositories.UserRepository
+	repo repositories.IUserRepository
 }
 
-func (service *UserService) GetUserByLogin(login string) (dto.UserDTO, error) {
-	return dto.UserDTO{}, nil
+func (service *userService) GetUserByLogin(login string) (models.User, error) {
+	return service.repo.GetUserByLogin(login)
 }
 
-func (service *UserService) CreateUser(login string, password string) error {
-	return nil
+func (service *userService) CreateUser(login string, password string) error {
+	user := models.User{
+		Login:    login,
+		Password: password,
+	}
+
+	return service.repo.CreateUser(user)
 }
 
-func (service *UserService) GetUsers() ([]dto.UserDTO, error) {
-	return []dto.UserDTO{}, nil
+func (service *userService) GetUsers() ([]models.User, error) {
+	return service.repo.GetUsers()
 }
 
-func (service *UserService) BindRepositories(
+func (service *userService) BindRepositories(
 	repoProvider repositories.IRepositoryProvider,
 ) {
 	service.repo = repoProvider.GetUserRepository()
 
 	service.isBindingRepos = true
-}
-
-func NewMockUserService() *UserService {
-	return &UserService{}
 }
