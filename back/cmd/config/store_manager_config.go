@@ -1,5 +1,5 @@
 package config
 
 type StoreManagerConfig struct {
-	storeConfigs []StoreConfig
+	StoresConfig []StoreConfig
 }
