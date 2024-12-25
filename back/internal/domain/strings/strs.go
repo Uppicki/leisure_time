@@ -3,4 +3,7 @@ package appstrings
 const (
 	UNKNOWN   = "UNKNOWN"
 	USER_TYPE = "USER_TYPE"
+
+	UNKNOWN_SOURCE = "UNKNOWN_SOURCE"
+	GIN_SOURCE     = "GIN_SOURCE"
 )
