@@ -18,14 +18,28 @@ type MyApp struct {
 }
 
 func (app *MyApp) Setup() {
+	app.storeManager.Setup()
+	app.storeManager.MakeMigrations()
+	app.serviceManager.SetupAndBinding(app.repositoryManager)
+	app.routerManager.SetupAndBinding(app.serviceManager)
 }
 
-func (app *MyApp) Run() {
-
+func (app *MyApp) Start() {
+	app.routerManager.Start()
 }
 
-func NewApp(config *config.AppConfig) *MyApp {
-	return &MyApp{
-		config: config,
+func NewApp(cfg *config.AppConfig) *MyApp {
+	routerManager := routermanager.NewRouterManager(&cfg.RouterManagerConfig)
+	serviceManager := servicemanager.NewServiceManager(&cfg.ServiceManagerConfig)
+
+	storeManager := storemanager.NewStoreManager(&cfg.StoreManagerConfig)
+
+	app := &MyApp{
+		config:         cfg,
+		routerManager:  routerManager,
+		serviceManager: serviceManager,
+		storeManager: storeManager,
 	}
+
+	return app
 }

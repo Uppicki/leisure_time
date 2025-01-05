@@ -11,5 +11,9 @@ func main() {
 	app := app.NewApp(config)
 
 	app.Setup()
-	app.Run()
+	app.Start()
+
+	for true {
+
+	}
 }

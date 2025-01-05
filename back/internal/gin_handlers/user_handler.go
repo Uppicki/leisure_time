@@ -8,7 +8,7 @@ import (
 )
 
 type UserHandler struct {
-	userService *service.UserService
+	userService service.IUserService
 }
 
 func (handler *UserHandler) GetUserByLogin(ctx *gin.Context) {
@@ -83,7 +83,7 @@ func (handler *UserHandler) GetUsers(ctx *gin.Context) {
 	)
 }
 
-func NewUserHandler(service *service.UserService) *UserHandler {
+func NewUserHandler(service service.IUserService) *UserHandler {
 	return &UserHandler{
 		userService: service,
 	}

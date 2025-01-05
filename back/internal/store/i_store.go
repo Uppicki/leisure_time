@@ -4,6 +4,7 @@ import (
 	"leisure_time/cmd/config"
 	"leisure_time/internal/domain/models"
 
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
@@ -37,9 +38,42 @@ type IUserStore interface {
 }
 
 type IStoreProvider interface {
-	GetUserStore() IUserStore
+	GetUserStore() (IUserStore, error)
 }
 
-func StoreFactory(cfg *config.StoreConfig) IStore {
-	return nil
+func StoreFactory(cfg *config.StoreConfig, eng IStoreEngine) IStore {
+	store := &store{
+		eng: eng,
+	}
+
+	switch cfg.StoreType{
+	case config.USER_TYPE:
+		return &userStore{
+			IStore: store,
+		}
+	default:
+		return nil
+	}
+}
+
+func StoreEngineFactory(cfg *config.StoreConfig) IStoreEngine {
+	var dialector gorm.Dialector
+
+	switch cfg.SourceDialect{
+	case config.SQLLITE_DIALECT:
+		dialector = sqlite.Open("gorm.db")
+	default:
+		return nil
+	}
+
+	switch cfg.SourceType {
+	case config.GIN_SOURCE:
+		engine := &gormEngine{
+			dialector: dialector,
+		}
+		
+		return engine
+	default:
+		return nil
+	}
 }
