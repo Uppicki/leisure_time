@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile/src/screens/app_nav_screen.dart';
 import 'package:flutter_mobile/src/screens/auth_screen.dart';
 import 'package:flutter_mobile/src/screens/content_screen.dart';
 
@@ -26,6 +27,11 @@ class _MyAppState extends State<MyApp> {
     setState(() {});
   }
 
+  void exit() {
+    isAuth = false;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -33,7 +39,7 @@ class _MyAppState extends State<MyApp> {
           ? AuthScreen(
               callback: login,
             )
-          : ContentScreen(),
+          : AppNavScreen(),
     );
   }
 }
