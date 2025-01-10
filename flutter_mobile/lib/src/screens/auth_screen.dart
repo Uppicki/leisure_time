@@ -1,13 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobile/src/screens/login_screen.dart';
 import 'package:flutter_mobile/src/screens/reg_screen.dart';
 
+@RoutePage()
 class AuthScreen extends StatelessWidget {
-  final Function _callback;
-
-  AuthScreen({
-    required Function callback,
-  }) : _callback = callback;
+  const AuthScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,27 +17,11 @@ class AuthScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               OutlinedButton(
-                onPressed: () async {
-                  final res = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => LoginScreen(),
-                    ),
-                  );
-
-                  if (res != null && res) {
-                    _callback();
-                  }
-                },
+                onPressed: () => context.router.pushNamed("/login"),
                 child: Text("Login"),
               ),
               OutlinedButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => RegScreen(),
-                  ),
-                ),
+                onPressed: () => context.router.pushNamed("/reg"),
                 child: Text("Reg"),
               ),
             ],

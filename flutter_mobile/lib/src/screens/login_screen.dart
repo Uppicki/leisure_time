@@ -1,10 +1,16 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobile/src/features/auth/service/auth_service.dart';
+import 'package:provider/provider.dart';
 
+@RoutePage()
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final _authService = context.read<AuthService>();
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -39,7 +45,7 @@ class LoginScreen extends StatelessWidget {
               ),
               FilledButton(
                 onPressed: () {
-                  Navigator.pop(context, true);
+                  _authService.login();
                 },
                 child: Text("Login"),
               ),
