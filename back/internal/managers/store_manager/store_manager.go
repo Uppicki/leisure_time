@@ -1,8 +1,10 @@
 package storemanager
 
 import (
+	"fmt"
 	config "leisure_time/cmd/config"
 	errs "leisure_time/internal/domain/errors"
+	appstrings "leisure_time/internal/domain/strings"
 	stores "leisure_time/internal/store"
 	"sync"
 
@@ -24,6 +26,13 @@ func (manager *storeManager) BindLogger(logger *logrus.Logger) {
 	defer manager.mu.Unlock()
 
 	manager.logger = logger
+
+	message := fmt.Sprintf(
+		appstrings.LOGGER_MESSAGE_BIND_MANAGER,
+		appstrings.STORE_MANAGER_STRING,
+	)
+
+	manager.logger.Info(message)
 }
 
 func (storeManager *storeManager) Setup() {

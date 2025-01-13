@@ -5,10 +5,13 @@ import (
 	"leisure_time/internal/repositories"
 	"leisure_time/internal/store"
 	"sync"
+
+	"github.com/sirupsen/logrus"
 )
 
 type IRepositoryManager interface {
 	repositories.IRepositoryProvider
+	BindLogger(logger *logrus.Logger)
 	SetupAndBinding(store.IStoreProvider)
 }
 

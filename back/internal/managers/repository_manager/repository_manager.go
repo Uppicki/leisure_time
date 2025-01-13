@@ -5,13 +5,24 @@ import (
 	"leisure_time/internal/repositories"
 	"leisure_time/internal/store"
 	"sync"
+
+	"github.com/sirupsen/logrus"
 )
 
 type repositoryManager struct {
 	config *config.RepositoryManagerConfig
 	mu     *sync.RWMutex
 
+	logger *logrus.Logger
+
 	repositories map[string]repositories.IRepository
+}
+
+func (manager *repositoryManager) BindLogger(logger *logrus.Logger) {
+	manager.mu.Lock()
+	defer manager.mu.Unlock()
+
+	manager.logger = logger
 }
 
 func (manager *repositoryManager) sortConfigs() []config.RepositoryConfig {

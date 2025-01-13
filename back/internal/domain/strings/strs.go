@@ -9,4 +9,8 @@ const (
 
 	SQLLITE_DIALECT = "SQLLITE_DIALECT"
 	UNKNOWN_DIALECT = "UNKNOWN_DIALECT"
+
+	LOGGER_MESSAGE_BIND_MANAGER = "Logger was binding with %s"
+
+	STORE_MANAGER_STRING = "StoreManager"
 )

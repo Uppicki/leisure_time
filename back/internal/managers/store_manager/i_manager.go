@@ -3,6 +3,7 @@ package storemanager
 import (
 	"leisure_time/cmd/config"
 	"leisure_time/internal/store"
+	"sync"
 
 	"github.com/sirupsen/logrus"
 )
@@ -18,6 +19,7 @@ type IStoreManager interface {
 func NewStoreManager(cfg *config.StoreManagerConfig) IStoreManager {
 	manager := &storeManager{
 		config:  cfg,
+		mu:      &sync.Mutex{},
 		engines: map[config.SourceType]store.IStoreEngine{},
 		stores:  map[config.StoreType]store.IStore{},
 	}

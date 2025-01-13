@@ -22,7 +22,6 @@ type MyApp struct {
 }
 
 func (app *MyApp) Setup() {
-	app.storeManager.BindLogger(app.logger)
 	app.storeManager.Setup()
 	app.storeManager.MakeMigrations()
 	app.repositoryManager.SetupAndBinding(app.storeManager)
@@ -37,6 +36,13 @@ func (app *MyApp) Start() {
 func NewApp(cfg *config.AppConfig) *MyApp {
 	logger := logrus.New()
 
+	switch cfg.Mod {
+	case config.Debug:
+		logger.SetLevel(logrus.DebugLevel)
+	case config.Prod:
+		logger.SetLevel(logrus.InfoLevel)
+	}
+
 	routerManager := routermanager.NewRouterManager(&cfg.RouterManagerConfig)
 	serviceManager := servicemanager.NewServiceManager(&cfg.ServiceManagerConfig)
 	repoManager := repositorymanager.NewRepositoryManager(&cfg.RepositoryManagerConfig)
@@ -50,6 +56,11 @@ func NewApp(cfg *config.AppConfig) *MyApp {
 		repositoryManager: repoManager,
 		storeManager:      storeManager,
 	}
+
+	app.storeManager.BindLogger(app.logger)
+	app.repositoryManager.BindLogger(app.logger)
+	app.serviceManager.BindLogger(app.logger)
+	app.routerManager.BindLogger(app.logger)
 
 	return app
 }

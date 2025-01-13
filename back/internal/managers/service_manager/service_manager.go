@@ -4,16 +4,30 @@ import (
 	"leisure_time/cmd/config"
 	"leisure_time/internal/repositories"
 	"leisure_time/internal/service"
+	"sync"
+
+	"github.com/sirupsen/logrus"
 )
 
 type serviceManager struct {
-	config   *config.ServiceManagerConfig
+	config *config.ServiceManagerConfig
+	mu     *sync.Mutex
+
+	logger *logrus.Logger
+
 	services map[string]service.IService
 }
 
 func (manager *serviceManager) sortConfigs() []config.ServiceConfig {
 	//configs := make([]*config.ServiceConfig)
 	return manager.config.ServicesConfig
+}
+
+func (manager *serviceManager) BindLogger(logger *logrus.Logger) {
+	manager.mu.Lock()
+	defer manager.mu.Unlock()
+
+	manager.logger = logger
 }
 
 func (manager *serviceManager) GetUserService() service.IUserService {

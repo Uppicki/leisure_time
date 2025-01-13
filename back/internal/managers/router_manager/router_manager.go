@@ -4,10 +4,16 @@ import (
 	"leisure_time/cmd/config"
 	servicemanager "leisure_time/internal/managers/service_manager"
 	routers "leisure_time/internal/router"
+	"sync"
+
+	"github.com/sirupsen/logrus"
 )
 
 type routerManager struct {
 	config *config.RouterManagerConfig
+	mu     *sync.Mutex
+
+	logger *logrus.Logger
 
 	routers map[string]routers.IRouter
 }
@@ -29,6 +35,13 @@ func (manager *routerManager) SetupAndBinding(
 			manager.routers[name] = router
 		}
 	}
+}
+
+func (manager *routerManager) BindLogger(logger *logrus.Logger) {
+	manager.mu.Lock()
+	defer manager.mu.Unlock()
+
+	manager.logger = logger
 }
 
 func (manager *routerManager) Start() {
