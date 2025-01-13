@@ -4,13 +4,26 @@ import (
 	config "leisure_time/cmd/config"
 	errs "leisure_time/internal/domain/errors"
 	stores "leisure_time/internal/store"
+	"sync"
+
+	"github.com/sirupsen/logrus"
 )
 
 type storeManager struct {
 	config *config.StoreManagerConfig
+	mu     *sync.Mutex
+
+	logger *logrus.Logger
 
 	engines map[config.SourceType]stores.IStoreEngine
 	stores  map[config.StoreType]stores.IStore
+}
+
+func (manager *storeManager) BindLogger(logger *logrus.Logger) {
+	manager.mu.Lock()
+	defer manager.mu.Unlock()
+
+	manager.logger = logger
 }
 
 func (storeManager *storeManager) Setup() {

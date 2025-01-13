@@ -30,8 +30,6 @@ type IStoreEngine interface {
 }
 
 type IUserStore interface {
-	IStore
-
 	CreateUser(models.User) error
 	GetUserByLogin(string) (models.User, error)
 	GetUserList() ([]models.User, error)
@@ -46,7 +44,7 @@ func StoreFactory(cfg *config.StoreConfig, eng IStoreEngine) IStore {
 		eng: eng,
 	}
 
-	switch cfg.StoreType{
+	switch cfg.StoreType {
 	case config.USER_TYPE:
 		return &userStore{
 			IStore: store,
@@ -59,7 +57,7 @@ func StoreFactory(cfg *config.StoreConfig, eng IStoreEngine) IStore {
 func StoreEngineFactory(cfg *config.StoreConfig) IStoreEngine {
 	var dialector gorm.Dialector
 
-	switch cfg.SourceDialect{
+	switch cfg.SourceDialect {
 	case config.SQLLITE_DIALECT:
 		dialector = sqlite.Open("gorm.db")
 	default:
@@ -71,7 +69,7 @@ func StoreEngineFactory(cfg *config.StoreConfig) IStoreEngine {
 		engine := &gormEngine{
 			dialector: dialector,
 		}
-		
+
 		return engine
 	default:
 		return nil

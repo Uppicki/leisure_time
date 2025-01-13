@@ -1,8 +1,8 @@
 package ginhandlers
 
-import "leisure_time/internal/domain/dto"
+import "leisure_time/internal/domain/models"
 
 // User responses
 type userListResponse struct {
-	Users []dto.UserDTO
+	Users []models.User
 }

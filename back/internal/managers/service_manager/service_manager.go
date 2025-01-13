@@ -16,8 +16,18 @@ func (manager *serviceManager) sortConfigs() []config.ServiceConfig {
 	return manager.config.ServicesConfig
 }
 
-func (manager *serviceManager) GetUserService() *service.UserService {
-	return &service.UserService{}
+func (manager *serviceManager) GetUserService() service.IUserService {
+	srvc, ok := manager.services[config.UserServiceType.String()]
+
+	if !ok {
+
+	} else if !srvc.IsReady() {
+
+	}
+
+	userService := srvc.(service.IUserService)
+
+	return userService
 }
 
 func (manager *serviceManager) SetupAndBinding(
